@@ -73,10 +73,10 @@ class S3Backend(Backend):
 
 class RequiredProvider(Block):
 
-    def __init__(self, name: str, source: str, version: Opt[str] = None):
-        data = {
-            'source': source,
-        }
+    def __init__(self, name: str, source: Opt[str] = None, version: Opt[str] = None):
+        data = {}
+        if source:
+            data['source'] = source
         if version:
             data['version'] = version
         super().__init__('required_provider', name, **data)
