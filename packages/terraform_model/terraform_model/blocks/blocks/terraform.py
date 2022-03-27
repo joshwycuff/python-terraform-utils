@@ -1,4 +1,5 @@
 # std
+from typing import Optional as Opt
 
 # external
 from terraform_version import __version__
@@ -72,11 +73,12 @@ class S3Backend(Backend):
 
 class RequiredProvider(Block):
 
-    def __init__(self, name: str, source: str, version: str = '*'):
+    def __init__(self, name: str, source: str, version: Opt[str] = None):
         data = {
             'source': source,
-            'version': version,
         }
+        if version:
+            data['version'] = version
         super().__init__('required_provider', name, **data)
 
     @classmethod
