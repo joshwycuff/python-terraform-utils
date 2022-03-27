@@ -7,7 +7,7 @@ from terraform_model.types.collections.tfcollection import TfCollection, T
 from terraform_model.utils.json import dumps
 from terraform_model.mixins import GetItemMixin, LengthMixin, LiteralMixin
 from .tflist import TfList
-from ..primitives import TfString
+from terraform_model.types import TfString
 from terraform_model.internal.deferred import deferred
 
 

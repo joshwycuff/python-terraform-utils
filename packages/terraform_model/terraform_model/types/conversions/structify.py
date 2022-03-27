@@ -5,9 +5,9 @@ from typing import Optional as Opt, Union
 
 # internal
 from ..internal.tftype import TfType
-from ..primitives import TfPrimitive, TfBool, TfNull, TfNumber, TfString
-from ..collections import TfCollection, TfList, TfMap, TfSet
-from ..structurals import TfStructural, TfTuple, TfObject
+from terraform_model.types import TfPrimitive, TfBool, TfNull, TfNumber, TfString, \
+    TfCollection, TfList, TfMap, TfSet, \
+    TfStructural, TfTuple, TfObject
 from terraform_model.expressions.expressions.getattr import GetAttr
 from terraform_model.utils.utils import get_class_name
 

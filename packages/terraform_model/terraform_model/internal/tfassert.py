@@ -64,12 +64,12 @@ def all_is_instance(cls, *objects):
 
 
 def is_number(obj):
-    from terraform_model.types.primitives import TfNumber
+    from terraform_model.types import TfNumber
     if not isinstance(obj, TfNumber):
         raise TerraformTypeError(f'Expected a number. Got {repr(obj)}')
 
 
 def is_bool(obj):
-    from terraform_model.types.primitives import TfBool
+    from terraform_model.types import TfBool
     if not isinstance(obj, TfBool):
         raise TerraformTypeError(f'Expected a bool. Got {repr(obj)}')

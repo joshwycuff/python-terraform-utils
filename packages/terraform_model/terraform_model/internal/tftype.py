@@ -7,7 +7,7 @@ from ..utils.errors import TerraformTypeError
 from terraform_model.mixins import LiteralMixin
 from terraform_model.types.internal.tftype import TfType
 from terraform_model.types.internal.tfunknown import TfUnknown
-from terraform_model.types.collections import TfCollection
+from terraform_model.types import TfCollection
 from ..types import TfBool, TfNull, TfNumber, TfString, TfList, TfMap, TfSet, TfTuple
 from .deferred import deferred
 

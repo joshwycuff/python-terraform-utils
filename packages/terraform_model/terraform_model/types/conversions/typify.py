@@ -3,9 +3,9 @@ from typing import Type, Union
 
 # internal
 from terraform_model.internal.tftype import tftype, is_type_or_generic
-from terraform_model.types.primitives import TfPrimitive, null, true, false, \
-    TfNumber, TfNumberLiteral, TfString, TfStringLiteral
-from terraform_model.types.collections import TfCollection, TfList, TfListLiteral, \
+from terraform_model.types import TfPrimitive, null, true, false, \
+    TfNumber, TfNumberLiteral, TfString, TfStringLiteral, \
+    TfCollection, TfList, TfListLiteral, \
     TfMap, TfMapLiteral, TfSetLiteral
 from terraform_model.types.internal.tftype import TfType
 from terraform_model.types.internal.tfunknown import tfunknown
