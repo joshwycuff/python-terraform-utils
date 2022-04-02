@@ -2,7 +2,7 @@
 from typing import Optional as Opt, Type, Union
 
 # internal
-from ...internal.tftype import TfJsonLike
+from terraform_model.internal.tftype import TfJsonLike
 from terraform_model.types.internal.tftype import TfType
 from terraform_model.types.conversions.typify import typify
 from .block import Block

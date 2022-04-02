@@ -6,13 +6,23 @@ from terraform_model.version import __version__
 from terraform_model.utils import log
 from terraform_model.internal.tftype import TfJsonObject
 from terraform_model.helpers.scope import Scope, ModuleScope, DEFAULT_NAME
-from terraform_model.blocks.blocks.block import Block
-from terraform_model.blocks.blocks.terraform import Terraform
+from terraform_model.blocks.block import Block
+from terraform_model.blocks.terraform import Terraform
 from terraform_model.utils.json import dump
 
 
 DIST = 'dist'
 TERRAFORM_TF_JSON = 'terraform.tf.json'
+BLOCK_MODEL_ALLOW_LIST = [
+    'data',
+    'locals',
+    'module',
+    'output',
+    'provider',
+    'resource',
+    'terraform',
+    'variable',
+]
 
 
 def compile_terraform(scope_name: str = DEFAULT_NAME, dirpath: str = DIST):
@@ -34,9 +44,9 @@ def model(scope: Scope) -> TfJsonObject:
         },
         'terraform': Terraform.model(scope),
     }
-    skip_types = Terraform.types()
     for block_type_name in scope.get_keys():
-        if block_type_name not in skip_types:
-            block_type = Block.get_type(block_type_name)
-            model[block_type.type_name()] = block_type.model(scope)
+        if block_type_name not in BLOCK_MODEL_ALLOW_LIST:
+            continue
+        block_type = Block.get_type(block_type_name)
+        model[block_type.type_name()] = block_type.model(scope)
     return model

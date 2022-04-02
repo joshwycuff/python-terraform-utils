@@ -2,7 +2,7 @@
 import unittest
 
 # internal
-from terraform_model.blocks import local
+from terraform_model.all import local
 
 # testing
 from terraform_model.helpers.scope import Scope

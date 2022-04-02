@@ -7,6 +7,8 @@ from terraform_model.types.internal.tftype import TfType
 from terraform_model.internal.tftype import is_generic
 from terraform_model.mixins.expression import ExpressionMixin
 from terraform_model.mixins.literal import LiteralMixin
+from terraform_model.mixins.getattr import GetAttrMixin
+from terraform_model.internal.deferred import deferred
 
 
 def tfstringify(obj: Union[ExpressionMixin, TfType, Type[TfType], GenericAlias]) -> str:

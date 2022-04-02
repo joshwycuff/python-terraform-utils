@@ -122,5 +122,3 @@ def _typify_collection(collection: Union[collection_like, TfCollection]) -> TfCo
         return TfSetLiteral(set(map(typify, collection)))
     else:
         raise TerraformConversionError(f'Cannot coerce {collection} to Collection')
-
-

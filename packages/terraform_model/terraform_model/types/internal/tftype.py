@@ -20,6 +20,9 @@ class TfType(ExpressionMixin, ToMixin):
     def __repr__(self):
         return f'<{self.type().replace("tf", "")}> {str(self)}'
 
+    def __hash__(self):
+        return hash(repr(self))
+
     @abstractmethod
     def __str__(self):
         raise NotImplementedError

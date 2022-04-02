@@ -3,7 +3,7 @@ from __future__ import annotations
 
 # internal
 from .block import Block
-from ...internal.tftype import TfJsonLike
+from terraform_model.internal.tftype import TfJsonLike
 from terraform_model.types.primitives.tfstring import TfString
 
 

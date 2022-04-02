@@ -4,10 +4,10 @@ from typing import Optional as Opt
 
 # internal
 from terraform_model.doc.markdown import Markdown
-from terraform_model.blocks.blocks.block import Block
-from terraform_model.blocks.blocks.variable import Variable
-from terraform_model.blocks.blocks.output import Output
-from terraform_model.blocks.blocks.provider import Provider
+from terraform_model.blocks.block import Block
+from terraform_model.blocks.variable import Variable
+from terraform_model.blocks.output import Output
+from terraform_model.blocks.provider import Provider
 from terraform_model.helpers.scope import Scope
 
 

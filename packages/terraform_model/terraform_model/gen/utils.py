@@ -1,6 +1,8 @@
 # std
 from inspect import Parameter
-from typing import Union
+import re
+from types import GenericAlias
+from typing import Dict, List, Set, Union
 import os
 
 # internal
@@ -9,22 +11,17 @@ from terraform_model.internal.tftype import tftype, get_type_like
 from terraform_model.internal.deferred import deferred
 from terraform_model.gen.code import Class, SELF, Code
 from terraform_model.expressions.expressions.getattr import GetAttr
+from terraform_model.utils.utils import get_class_name
+from terraform_model.types.internal.tfvoid import void
 
 # constants
+TERRAFORM_MODEL_USAGE = r'(terraform_model(\.\w+)*)\.(\w+)'
+FORWARD_REF_PATTERN = r"ForwardRef\('(\w+)'\)"
 GET_ATTR = f'{GetAttr.__module__}.{GetAttr.__qualname__}'
 
 
 def convert_filepath_to_module_path(filepath: str) -> str:
     return os.path.splitext(filepath)[0].replace(os.path.sep, '.')
-
-
-def append_imports(code: Code):
-    code.append(
-        'from typing import Union',
-        'import terraform_model',
-        '',
-        '',
-    )
 
 
 def class_path(cls: type) -> str:
@@ -46,7 +43,8 @@ def _generic_class_path(cls: type) -> str:
 def create_init_method(class_: Class, block_schema: dict, sub_type: str):
     parameters = get_parameters(block_schema)
     method = class_.method('__init__', parameters)
-    kwargs = 'dict(' + ', '.join((f'{p["name"]}={p["name"]}' for p in parameters if p['name'] != 'local_name')) + ')'
+    kwargs = 'dict(' + ', '.join(
+        (f'{p["name"]}={p["name"]}' for p in parameters if p['name'] != 'local_name')) + ')'
     method.append(f'super().__init__("{sub_type}", local_name, **{kwargs})')
 
 
@@ -73,10 +71,16 @@ def get_parameters(block_schema: dict) -> list[dict]:
             continue
         parameter = {
             'name': name,
-            'annotation': get_type_like(attribute['type']),
+            'annotation': get_annotation(attribute['type']),
         }
         if attribute.get('optional', False):
-            parameter['default'] = None
+            parameter['default'] = void
+        parameters.append(parameter)
+    for name, block_type in block_schema.get('block_types', {}).items():
+        parameter = {
+            'name': name,
+            'annotation': get_block_annotation(name, block_type),
+        }
         parameters.append(parameter)
     return parameters
 
@@ -116,3 +120,64 @@ def get_type_from_str_list_type_definition(obj: Union[str, list[str]]):
         # unknown
         'unknown': deferred.TfUnknown,
     }.get(obj, deferred.TfUnknown)
+
+
+def get_annotation(attribute_type: Union[str, list[str]]):
+    if isinstance(attribute_type, str):
+        return get_type_like(attribute_type)
+    elif isinstance(attribute_type, list):
+        if len(attribute_type) == 2:
+            origin = get_type_like(attribute_type[0])
+            origin_args = getattr(origin, '__args__')
+            arg = get_type_like(attribute_type[1])
+            arg_args = getattr(arg, '__args__')
+            return Union[
+                _generic_alias(origin_args[0], arg_args[0]),
+                _generic_alias(origin_args[0], arg_args[1]),
+                _generic_alias(origin_args[1], arg_args[0]),
+                _generic_alias(origin_args[1], arg_args[1]),
+            ]
+        else:
+            raise NotImplementedError
+    else:
+        raise NotImplementedError
+
+
+def _generic_alias(origin, arg):
+    if origin is Dict:
+        return GenericAlias(origin, (str, arg))
+    else:
+        return GenericAlias(origin, (arg,))
+
+
+def get_block_annotation(name: str, block_type: dict):
+    class_name = get_class_name(name)
+    nesting_mode = block_type.get('nesting_mode')
+    if nesting_mode == 'single':
+        return class_name
+    elif nesting_mode == 'list':
+        return Union[List[class_name], deferred.TfList[class_name]]
+    elif nesting_mode == 'set':
+        return Union[Set[class_name], deferred.TfSet[class_name]]
+    else:
+        raise NotImplementedError
+
+
+def remove_forward_refs(string: str) -> str:
+    return re.sub(FORWARD_REF_PATTERN, r'\1', string)
+
+
+def prepend_imports(code: str) -> str:
+    terraform_model_imports = '\n'.join(set([
+        f'from {m[0]} import {m[-1]}'
+        for m in re.findall(TERRAFORM_MODEL_USAGE, code)
+    ]))
+    return f'''from typing import Dict, List, Union, Set, Tuple
+
+import terraform_model
+from terraform_model.types.internal.tfvoid import void
+{terraform_model_imports}
+
+
+{code}
+'''

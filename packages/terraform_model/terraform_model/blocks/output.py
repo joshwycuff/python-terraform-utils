@@ -2,7 +2,7 @@
 from __future__ import annotations
 
 # internal
-from ...internal.tftype import TfJsonObject
+from terraform_model.internal.tftype import TfJsonObject
 from terraform_model.helpers.scope import Scope
 from terraform_model.types.internal.tftype import TfType
 from terraform_model.types.conversions.typify import typify

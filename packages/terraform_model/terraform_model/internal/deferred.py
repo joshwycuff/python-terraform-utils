@@ -81,6 +81,16 @@ class Deferred:
         return tfmap
 
     @property
+    def TfSet(self):
+        from terraform_model.types import TfSet
+        return TfSet
+
+    @property
+    def tfset(self):
+        from terraform_model.types.collections.tfset import tfset
+        return tfset
+
+    @property
     def TfUnknown(self):
         from terraform_model.types.internal.tfunknown import TfUnknown
         return TfUnknown
@@ -162,42 +172,42 @@ class Deferred:
 
     @property
     def Block(self):
-        from terraform_model.blocks.blocks.block import Block
+        from terraform_model.blocks.block import Block
         return Block
 
     @property
     def Data(self):
-        from terraform_model.blocks.blocks.data import Data
+        from terraform_model.blocks.data import Data
         return Data
 
     @property
     def Local(self):
-        from terraform_model.blocks.blocks.locals import Local
+        from terraform_model.blocks.locals import Local
         return Local
 
     @property
     def Module(self):
-        from terraform_model.blocks.blocks.module import Module
+        from terraform_model.blocks.module import Module
         return Module
 
     @property
     def Output(self):
-        from terraform_model.blocks.blocks.output import Output
+        from terraform_model.blocks.output import Output
         return Output
 
     @property
     def Provider(self):
-        from terraform_model.blocks.blocks.provider import Provider
+        from terraform_model.blocks.provider import Provider
         return Provider
 
     @property
     def Resource(self):
-        from terraform_model.blocks.blocks.resource import Resource
+        from terraform_model.blocks.resource import Resource
         return Resource
 
     @property
     def Variable(self):
-        from terraform_model.blocks.blocks.variable import Variable
+        from terraform_model.blocks.variable import Variable
         return Variable
 
     @property
@@ -304,6 +314,11 @@ class Deferred:
     def tftype(self):
         from terraform_model.internal import tftype
         return tftype
+
+    @property
+    def dumps(self):
+        from terraform_model.utils.json import dumps
+        return dumps
 
 
 deferred = Deferred()

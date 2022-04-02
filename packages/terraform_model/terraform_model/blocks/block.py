@@ -8,6 +8,7 @@ from terraform_model.mixins import ExpressionMixin, GetAttrMixin
 from terraform_model.helpers.scope import Scope, DEFAULT_NAME
 from terraform_model.types.conversions.typify import typify
 from terraform_model.internal.tftype import is_type_or_generic, TfJsonObject
+from terraform_model.types.internal.tfvoid import void
 
 
 def maybe_typify(something):
@@ -62,7 +63,7 @@ class Block(ABC, ExpressionMixin, GetAttrMixin):
         return self._scope
 
     def json(self) -> TfJsonObject:
-        return self._data
+        return {key: value for key, value in self._data.items() if value is not void}
 
     def _register(self):
         scope = Scope.get_active_scope()

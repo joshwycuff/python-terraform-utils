@@ -7,7 +7,7 @@ from typing import Optional as Opt, Type, Union
 # internal
 from terraform_model.utils.types import JsonObject
 from terraform_model.helpers.scope import Scope
-from terraform_model.blocks.blocks.block import Block
+from terraform_model.blocks.block import Block
 from terraform_model.mixins import CompareMixin, HashableMixin, MathMixin
 from terraform_model.types.internal.tftype import TfType
 from terraform_model.types.conversions.typify import typify

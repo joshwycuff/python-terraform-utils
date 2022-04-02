@@ -1,5 +1,5 @@
 # internal
-from ...internal.tftype import TfJsonObject
+from terraform_model.internal.tftype import TfJsonObject
 from terraform_model.helpers.scope import Scope
 from .block import Block
 from terraform_model.types.internal.tftype import TfType
