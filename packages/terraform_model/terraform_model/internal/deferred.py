@@ -121,6 +121,11 @@ class Deferred:
         return tfstringify
 
     @property
+    def tfjsonify(self):
+        from terraform_model.internal.tfjsonify import tfjsonify
+        return tfjsonify
+
+    @property
     def get_type(self):
         from terraform_model.internal.tftype import tftype
         return tftype

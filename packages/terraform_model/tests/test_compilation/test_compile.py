@@ -35,6 +35,8 @@ class TestCompile(unittest.TestCase):
     _module_function_decorator_b_json = os.path.join(os.path.dirname(__file__), 'test_files/module_function_decorator_b.json')
     _expressions_py = os.path.join(os.path.dirname(__file__), 'test_files/expressions.py')
     _expressions_json = os.path.join(os.path.dirname(__file__), 'test_files/expressions.json')
+    _resource_configuration_block_py = os.path.join(os.path.dirname(__file__), 'test_files/resource_configuration_block.py')
+    _resource_configuration_block_json = os.path.join(os.path.dirname(__file__), 'test_files/resource_configuration_block.json')
 
     @staticmethod
     def read(filepath) -> str:
@@ -52,42 +54,50 @@ class TestCompile(unittest.TestCase):
     def test_terraform_block(self):
         import_module_from_filepath(self._terraform_py)
         scope = Scope.get_scope()
-        self.assertModelEqual(model(scope), self._terraform_json)
+        result = model(scope)
+        self.assertModelEqual(result, self._terraform_json)
 
     def test_variables(self):
         import_module_from_filepath(self._variables_py)
         scope = Scope.get_scope()
-        self.assertModelEqual(model(scope), self._variables_json)
+        result = model(scope)
+        self.assertModelEqual(result, self._variables_json)
 
     def test_locals(self):
         import_module_from_filepath(self._locals_py)
         scope = Scope.get_scope()
-        self.assertModelEqual(model(scope), self._locals_json)
+        result = model(scope)
+        self.assertModelEqual(result, self._locals_json)
 
     def test_outputs(self):
         import_module_from_filepath(self._outputs_py)
         scope = Scope.get_scope()
-        self.assertModelEqual(model(scope), self._outputs_json)
+        result = model(scope)
+        self.assertModelEqual(result, self._outputs_json)
 
     def test_providers(self):
         import_module_from_filepath(self._providers_py)
         scope = Scope.get_scope()
-        self.assertModelEqual(model(scope), self._providers_json)
+        result = model(scope)
+        self.assertModelEqual(result, self._providers_json)
 
     def test_data(self):
         import_module_from_filepath(self._data_py)
         scope = Scope.get_scope()
-        self.assertModelEqual(model(scope), self._data_json)
+        result = model(scope)
+        self.assertModelEqual(result, self._data_json)
 
     def test_resources(self):
         import_module_from_filepath(self._resources_py)
         scope = Scope.get_scope()
-        self.assertModelEqual(model(scope), self._resources_json)
+        result = model(scope)
+        self.assertModelEqual(result, self._resources_json)
 
     def test_modules(self):
         import_module_from_filepath(self._modules_py)
         scope = Scope.get_scope()
-        self.assertModelEqual(model(scope), self._modules_json)
+        result = model(scope)
+        self.assertModelEqual(result, self._modules_json)
 
     def test_module_decorator(self):
         import_module_from_filepath(self._module_decorator_py)
@@ -106,4 +116,11 @@ class TestCompile(unittest.TestCase):
     def test_expressions(self):
         import_module_from_filepath(self._expressions_py)
         scope = Scope.get_scope()
-        self.assertModelEqual(model(scope), self._expressions_json)
+        result = model(scope)
+        self.assertModelEqual(result, self._expressions_json)
+
+    def test_resource_configuration_block(self):
+        import_module_from_filepath(self._resource_configuration_block_py)
+        scope = Scope.get_scope()
+        result = model(scope)
+        self.assertModelEqual(result, self._resource_configuration_block_json)

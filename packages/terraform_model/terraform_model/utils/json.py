@@ -9,6 +9,11 @@ from terraform_model.utils.open import Open
 class TerraformJSONEncoder(JSONEncoder):
     def default(self, obj):
         try:
+            return deferred.tfjsonify(obj)
+        except NotImplementedError:
+            pass
+
+        try:
             return deferred.tfstringify(obj)
         except NotImplementedError:
             pass

@@ -13,9 +13,6 @@ class Configuration(Block):
     def __str__(self):
         return f'configuration.{self.sub_type}.{self.name}'
 
-    def json(self):
-        return self._data
-
     @classmethod
     def type(cls):
         return Configuration
