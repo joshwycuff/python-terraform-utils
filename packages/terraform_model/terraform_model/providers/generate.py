@@ -25,7 +25,7 @@ def _generate_provider(provider: Provider):
     provider_dir = os.path.join(PROVIDERS_DIR, friendly_provider_name)
     log.info(f'Generating provider {provider.name} at {provider_dir}')
     _generate_resources(provider_dir, provider.schema.resources)
-    # _generate_data_sources(provider_dir, provider.schema.data_sources)  # TODO
+    _generate_data_sources(provider_dir, provider.schema.data_sources)
 
 
 def _generate_resources(provider_dir: str, resource_schemas: list[ResourceSchema]):
@@ -35,8 +35,6 @@ def _generate_resources(provider_dir: str, resource_schemas: list[ResourceSchema
 
 
 def _generate_resource(resources_dir: str, resource_schema: ResourceSchema):
-    if resource_schema.name != 'aws_cloudwatch_metric_alarm':  # TODO: delete me
-        return
     filepath = os.path.join(resources_dir, f'{resource_schema.name}.py')
     log.debug(f'Generating resource {resource_schema.name} at {filepath}')
     code = compile_resource(resource_schema.name, resource_schema.schema)
