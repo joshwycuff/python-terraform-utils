@@ -12,6 +12,7 @@ from terraform_model.utils.json import dump
 
 
 DIST = 'dist'
+PROVIDERS = 'providers'
 TERRAFORM_TF_JSON = 'terraform.tf.json'
 BLOCK_MODEL_ALLOW_LIST = [
     'data',

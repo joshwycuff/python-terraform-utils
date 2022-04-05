@@ -5,7 +5,7 @@ import os
 from terraform_model.compilation.compile import import_module_from_filepath
 from terraform_model.helpers.scope import Scope, DEFAULT_NAME
 from terraform_model.doc.generate import generate_markdown
-from terraform_model.cli.subcommands.terraform import default_terraform, validate
+from terraform_model.cli.subcommands.terraform import get_terraform, validate
 from terraform_model.doc import dot
 from terraform_model.utils.errors import TerraformModelException
 
@@ -32,5 +32,5 @@ def _doc_scope(args, module, scope):
 
 
 def _graph() -> bytes:
-    tf = default_terraform()
+    tf = get_terraform()
     return tf.graph(capture=True)

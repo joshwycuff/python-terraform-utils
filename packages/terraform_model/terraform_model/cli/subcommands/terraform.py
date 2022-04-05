@@ -8,13 +8,13 @@ from terraform_model.utils import log
 
 def terraform(args):
     log.info(f'Running terraform {" ".join(args.args)}')
-    tf = default_terraform()
+    tf = get_terraform()
     tf(*args.args)
 
 
 def validate(args):
     if args.init or args.validate:
-        tf = default_terraform()
+        tf = get_terraform()
         if args.init:
             log.info(f'Initializing terraform model')
             tf.init()
@@ -24,6 +24,6 @@ def validate(args):
 
 
 @cache
-def default_terraform():
+def get_terraform(cwd: str = DIST):
     from py_terraform import Terraform
-    return Terraform(global_call_kwargs={'cwd': DIST})
+    return Terraform(global_call_kwargs={'cwd': cwd})

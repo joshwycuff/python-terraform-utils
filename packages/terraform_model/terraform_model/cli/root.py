@@ -58,3 +58,5 @@ parser_terraform.add_argument('args', nargs='+')
 
 # providers
 parser_providers = subparsers.add_parser('providers')
+parser_providers.add_argument('--filepath', '-f', default='main.py')
+parser_providers.add_argument('--clean', '-c', action='store_true')
