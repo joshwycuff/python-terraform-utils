@@ -53,7 +53,7 @@ def module_function(func):
     def wrapper(name: Opt[str] = None, **kwargs: TfJsonLike):
         if name is None:
             name = generate_name(kwargs)
-        instance_output = getattr(PartialNestedModule(name, **kwargs), _output.name)
-        return to(instance_output, _output.data['value'])
+        instance_output = getattr(PartialNestedModule(name, **kwargs), _output.tf_name)
+        return to(instance_output, _output.tf_data['value'])
 
     return wrapper

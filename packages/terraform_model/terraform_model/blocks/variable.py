@@ -33,25 +33,25 @@ class Variable(Block, CompareMixin, HashableMixin, MathMixin):
         super().__init__(None, name, **kwargs)
 
     def __str__(self):
-        return f'var.{self.name}'
+        return f'var.{self.tf_name}'
 
     def __hash__(self):
-        return hash(f'tfvariable-{self.name}-{self.data.get("default")}-{self.data.get("type")}')
+        return hash(f'tfvariable-{self.tf_name}-{self.tf_data.get("default")}-{self.tf_data.get("type")}')
 
     @classmethod
-    def type(cls):
+    def tf_type(cls):
         return Variable
 
     @classmethod
-    def type_name(cls):
+    def tf_type_name(cls):
         return 'variable'
 
     @classmethod
-    def model(cls, scope: Scope[Block]) -> JsonObject:
-        blocks = scope.get_items(cls.type_name())
+    def tf_model(cls, scope: Scope[Block]) -> JsonObject:
+        blocks = scope.get_items(cls.tf_type_name())
         model = {}
         for block in blocks:
-            model[block.name] = block.json()
+            model[block.tf_name] = block.tf_json()
         return model
 
     @classmethod

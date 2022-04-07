@@ -79,10 +79,10 @@ def _typify_block(block) -> TfType:
 
 
 def _typify_variable(var) -> TfType:
-    if 'type' in var.data:
-        return tftype(var.data['type'])(var)
-    if 'default' in var.data:
-        return tftype(var.data['default'])(var)
+    if 'type' in var.tf_data:
+        return tftype(var.tf_data['type'])(var)
+    if 'default' in var.tf_data:
+        return tftype(var.tf_data['default'])(var)
     return tfunknown(var)
 
 
@@ -91,7 +91,7 @@ def _typify_local(local) -> TfType:
 
 
 def _typify_output(output) -> TfType:
-    return tftype(output.data['value'])(output)
+    return tftype(output.tf_data['value'])(output)
 
 
 def _typify_primitive(value: Union[JsonPrimitive, TfPrimitive]) -> TfPrimitive:

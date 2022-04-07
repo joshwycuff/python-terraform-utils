@@ -19,20 +19,20 @@ class RequiredVersion(Block):
         super().__init__(None, 'RequiredVersion', **data)
 
     @classmethod
-    def type_name(cls):
+    def tf_type_name(cls):
         return 'RequiredVersion'
 
     @classmethod
-    def type(cls):
+    def tf_type(cls):
         return RequiredVersion
 
     @classmethod
-    def model(cls, scope: Scope[Block]) -> JsonObject:
-        blocks = scope.get_items(cls.type_name())
+    def tf_model(cls, scope: Scope[Block]) -> JsonObject:
+        blocks = scope.get_items(cls.tf_type_name())
         if len(blocks) > 1:
             raise TerraformModelException('Cannot have more than 1 RequiredVersion')
         if len(blocks) == 1:
-            return blocks[0].json()
+            return blocks[0].tf_json()
         else:
             return {}
 
@@ -43,19 +43,19 @@ class Backend(Block):
         super().__init__('backend', backend_type, **kwargs)
 
     @classmethod
-    def type_name(cls):
+    def tf_type_name(cls):
         return 'Backend'
 
     @classmethod
-    def type(cls):
+    def tf_type(cls):
         return Backend
 
     @classmethod
-    def model(cls, scope: Scope[Block]) -> JsonObject:
-        blocks = scope.get_items(cls.type_name())
+    def tf_model(cls, scope: Scope[Block]) -> JsonObject:
+        blocks = scope.get_items(cls.tf_type_name())
         _model = {}
         for block in blocks:
-            _model[block.name] = block.json()
+            _model[block.tf_name] = block.tf_json()
         return _model
 
 
@@ -82,19 +82,19 @@ class RequiredProvider(Block):
         super().__init__('required_provider', name, **data)
 
     @classmethod
-    def type_name(cls):
+    def tf_type_name(cls):
         return 'RequiredProvider'
 
     @classmethod
-    def type(cls):
+    def tf_type(cls):
         return RequiredProvider
 
     @classmethod
-    def model(cls, scope: Scope[Block]) -> JsonObject:
-        blocks = scope.get_items(cls.type_name())
+    def tf_model(cls, scope: Scope[Block]) -> JsonObject:
+        blocks = scope.get_items(cls.tf_type_name())
         _model = {}
         for block in blocks:
-            _model[block.name] = block.json()
+            _model[block.tf_name] = block.tf_json()
         return _model
 
 
@@ -106,11 +106,11 @@ class Terraform:
 
     @classmethod
     def model(cls, scope: Scope[Block]) -> JsonObject:
-        _model = RequiredVersion.model(scope)
-        backend = Backend.model(scope)
+        _model = RequiredVersion.tf_model(scope)
+        backend = Backend.tf_model(scope)
         if backend:
             _model['backend'] = backend
-        required_providers = RequiredProvider.model(scope)
+        required_providers = RequiredProvider.tf_model(scope)
         if required_providers:
             _model['required_providers'] = required_providers
         return _model

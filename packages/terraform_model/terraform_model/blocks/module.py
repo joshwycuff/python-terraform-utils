@@ -18,22 +18,22 @@ class Module(Block):
         super().__init__(None, name, **data)
 
     def __str__(self):
-        return f'module.{self.name}'
+        return f'module.{self.tf_name}'
 
     @classmethod
-    def type(cls):
+    def tf_type(cls):
         return Module
 
     @classmethod
-    def type_name(cls):
+    def tf_type_name(cls):
         return 'module'
 
     @classmethod
-    def model(cls, scope: Scope[Block]) -> TfJsonObject:
-        blocks = scope.get_items(cls.type_name())
+    def tf_model(cls, scope: Scope[Block]) -> TfJsonObject:
+        blocks = scope.get_items(cls.tf_type_name())
         model = {}
         for block in blocks:
-            model[block.name] = block.json()
+            model[block.tf_name] = block.tf_json()
         return model
 
 

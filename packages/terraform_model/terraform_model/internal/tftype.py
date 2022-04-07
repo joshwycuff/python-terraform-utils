@@ -128,10 +128,10 @@ def _tftype_from_local(loc, deep: bool) -> TfTypeOutputType:
 
 def _tftype_from_variable(var, deep: bool) -> TfTypeOutputType:
     var = cast(deferred.Variable, var)
-    if var.data.get('type') is not None:
-        return tftype(var.data.get('type'), deep)
-    elif var.data.get('default') is not None:
-        return tftype(var.data.get('default'), deep)
+    if var.tf_data.get('type') is not None:
+        return tftype(var.tf_data.get('type'), deep)
+    elif var.tf_data.get('default') is not None:
+        return tftype(var.tf_data.get('default'), deep)
     else:
         return TfUnknown
 
@@ -303,10 +303,10 @@ def get_element_tftype(obj, deep=False) -> Type[TfType]:
         return tftype(next(iter(obj.data.values())), deep)
     elif isinstance(obj.data, deferred.Variable):
         var = obj.data
-        if var.data.get('type') is None:
-            return get_element_tftype(var.data.get('default'))
+        if var.tf_data.get('type') is None:
+            return get_element_tftype(var.tf_data.get('default'))
         else:
-            return get_element_tftype(var.data.get('type'))
+            return get_element_tftype(var.tf_data.get('type'))
     elif isinstance(obj.data, deferred.Local):
         loc = obj.data
         return get_element_tftype(loc.value)

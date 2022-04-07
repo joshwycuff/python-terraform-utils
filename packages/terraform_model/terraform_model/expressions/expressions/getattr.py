@@ -15,4 +15,4 @@ class GetAttr(Expression):
 
     @property
     def attr(self):
-        return self._args[1].data
+        return self._args[1].tf_data

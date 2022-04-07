@@ -15,22 +15,22 @@ class Output(Block):
         super().__init__(None, name, value=value)
 
     def __str__(self):
-        return str(self.data['value'])
+        return str(self.tf_data['value'])
 
     @classmethod
-    def type(cls):
+    def tf_type(cls):
         return Output
 
     @classmethod
-    def type_name(cls):
+    def tf_type_name(cls):
         return 'output'
 
     @classmethod
-    def model(cls, scope: Scope[Block]) -> TfJsonObject:
-        blocks = scope.get_items(cls.type_name())
+    def tf_model(cls, scope: Scope[Block]) -> TfJsonObject:
+        blocks = scope.get_items(cls.tf_type_name())
         model = {}
         for block in blocks:
-            model[block.name] = block.json()
+            model[block.tf_name] = block.tf_json()
         return model
 
     @classmethod

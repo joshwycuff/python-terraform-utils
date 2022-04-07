@@ -25,7 +25,7 @@ def generate_markdown(scope: Scope, module=None, md: Opt[Markdown] = None) -> Ma
 
 def _variables(md: Markdown, scope: Scope):
     section = md.section('Input Variables')
-    blocks = scope.get_items(Variable.type_name())
+    blocks = scope.get_items(Variable.tf_type_name())
     if len(blocks) > 0:
         _blocks_table(section, blocks)
     else:
@@ -34,10 +34,10 @@ def _variables(md: Markdown, scope: Scope):
 
 def _outputs(md: Markdown, scope: Scope):
     section = md.section('Output Values')
-    blocks = scope.get_items(Output.type_name())
+    blocks = scope.get_items(Output.tf_type_name())
     if len(blocks) > 0:
         columns = ['name', 'type']
-        rows = [dict(name=b.name, type=b.data['value'].tftype()) for b in blocks]
+        rows = [dict(name=b.tf_name, type=b.tf_data['value'].tftype()) for b in blocks]
         section.table(dict(columns=columns, rows=rows))
     else:
         section.write_line(str(None))
@@ -45,7 +45,7 @@ def _outputs(md: Markdown, scope: Scope):
 
 def _providers(md: Markdown, scope: Scope):
     section = md.section('Providers')
-    blocks = scope.get_items(Provider.type_name())
+    blocks = scope.get_items(Provider.tf_type_name())
     if len(blocks) > 0:
         _blocks_table(section, blocks, 'sub_type')
     else:
@@ -58,11 +58,11 @@ def _modules(md: Markdown, scope: Scope):
         section.write_line(str(None))
     else:
         for nested_module in scope.children:
-            sub_section = section.section(nested_module.name)
+            sub_section = section.section(nested_module.tf_name)
             generate_markdown(nested_module, nested_module.module_or_function, sub_section)
 
 
 def _blocks_table(section: Markdown, blocks: list[Block], name_attr: str = 'name'):
-    columns = ['name'] + sorted(list(set(chain(*(b.data.keys() for b in blocks)))))
-    rows = [dict(name=getattr(b, name_attr), **b.data) for b in blocks]
+    columns = ['name'] + sorted(list(set(chain(*(b.tf_data.keys() for b in blocks)))))
+    rows = [dict(name=getattr(b, name_attr), **b.tf_data) for b in blocks]
     section.table(dict(columns=columns, rows=rows))

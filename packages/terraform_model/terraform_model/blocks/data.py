@@ -14,14 +14,14 @@ class Data(Block):
         super().__init__(sub_type, name, **kwargs)
 
     def __str__(self):
-        return f'data.{self.sub_type}.{self.name}'
+        return f'data.{self.tf_sub_type}.{self.tf_name}'
 
     @classmethod
-    def type(cls):
+    def tf_type(cls):
         return Data
 
     @classmethod
-    def type_name(cls):
+    def tf_type_name(cls):
         return 'data'
 
     @classmethod

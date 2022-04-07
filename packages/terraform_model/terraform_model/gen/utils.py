@@ -1,4 +1,5 @@
 # std
+import keyword
 from inspect import Parameter
 import re
 from types import GenericAlias
@@ -45,7 +46,7 @@ def create_init_method(class_: Class, block_schema: dict, sub_type: str):
     method = class_.method('__init__', parameters)
     kwargs = 'dict(' + ', '.join(
         (f'{p["name"]}={p["name"]}' for p in parameters if p['name'] != 'local_name')) + ')'
-    method.append(f'super().__init__("{sub_type}", local_name, **{kwargs})')
+    method.append(f'super().__init__("{unsafe_name(sub_type)}", local_name, **{kwargs})')
 
 
 def add_attributes(class_: Class, block_schema: dict):
@@ -181,3 +182,11 @@ from terraform_model.types.internal.tfvoid import void
 
 {code}
 '''
+
+
+def safe_name(name: str) -> str:
+    return f'{name}_py_safe'
+
+
+def unsafe_name(name: str) -> str:
+    return name.replace('_py_safe', '')

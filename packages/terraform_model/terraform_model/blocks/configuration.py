@@ -11,14 +11,14 @@ class Configuration(Block):
         super().__init__(sub_type, name, **kwargs)
 
     def __str__(self):
-        return f'configuration.{self.sub_type}.{self.name}'
+        return f'configuration.{self.tf_sub_type}.{self.tf_name}'
 
     @classmethod
-    def type(cls):
+    def tf_type(cls):
         return Configuration
 
     @classmethod
-    def type_name(cls):
+    def tf_type_name(cls):
         return 'configuration'
 
     @classmethod

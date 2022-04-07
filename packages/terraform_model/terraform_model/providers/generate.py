@@ -21,8 +21,7 @@ def generate_providers(providers: list[Provider]):
 
 
 def _generate_provider(provider: Provider):
-    friendly_provider_name = provider.name.replace('.', '_')
-    provider_dir = os.path.join(PROVIDERS_DIR, friendly_provider_name)
+    provider_dir = os.path.join(PROVIDERS_DIR, provider.friendly_name)
     log.info(f'Generating provider {provider.name} at {provider_dir}')
     _generate_resources(provider_dir, provider.schema.resources)
     _generate_data_sources(provider_dir, provider.schema.data_sources)
@@ -37,7 +36,7 @@ def _generate_resources(provider_dir: str, resource_schemas: list[ResourceSchema
 def _generate_resource(resources_dir: str, resource_schema: ResourceSchema):
     filepath = os.path.join(resources_dir, f'{resource_schema.name}.py')
     log.debug(f'Generating resource {resource_schema.name} at {filepath}')
-    code = compile_resource(resource_schema.name, resource_schema.schema)
+    code = compile_resource(resource_schema.name, resource_schema.safe_schema)
     utils.prepend_imports(code)
     with Open(filepath, mode='w') as fh:
         fh.write(code)
@@ -53,7 +52,7 @@ def _generate_data_sources(provider_dir: str, data_source_schemas: list[Resource
 def _generate_data_source(data_sources_dir: str, data_source_schema: ResourceSchema):
     filepath = os.path.join(data_sources_dir, f'{data_source_schema.name}.py')
     log.debug(f'Generating data source {data_source_schema.name} at {filepath}')
-    code = compile_data_source(data_source_schema.name, data_source_schema.schema)
+    code = compile_data_source(data_source_schema.name, data_source_schema.safe_schema)
     with Open(filepath, mode='w') as fh:
         fh.write(code)
     _import_up(filepath, f'Data{terraform_model.utils.utils.get_class_name(data_source_schema.name)}')

@@ -13,26 +13,26 @@ class Local(Block):
         self._value: TfType = typify(value)
 
     def __str__(self):
-        return f'local.{self.name}'
+        return f'local.{self.tf_name}'
 
     @property
     def value(self):
         return self._value
 
     @classmethod
-    def type_name(cls):
+    def tf_type_name(cls):
         return 'locals'
 
     @classmethod
-    def type(cls):
+    def tf_type(cls):
         return Local
 
     @classmethod
-    def model(cls, scope: Scope[Block]) -> TfJsonObject:
-        blocks = scope.get_items(cls.type_name())
+    def tf_model(cls, scope: Scope[Block]) -> TfJsonObject:
+        blocks = scope.get_items(cls.tf_type_name())
         _model = {}
         for block in blocks:
-            _model[block.name] = block.value
+            _model[block.tf_name] = block.value
         return _model
 
     @classmethod

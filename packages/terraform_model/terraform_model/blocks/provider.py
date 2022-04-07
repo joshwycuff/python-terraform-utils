@@ -16,25 +16,25 @@ class Provider(Block):
         super().__init__(sub_type, None, **kwargs)
 
     @property
-    def name(self):
-        if 'alias' in self.data:
-            return f'{self.sub_type}.{self.data["alias"]}'
-        return self.sub_type
+    def tf_name(self):
+        if 'alias' in self.tf_data:
+            return f'{self.tf_sub_type}.{self.tf_data["alias"]}'
+        return self.tf_sub_type
 
     @classmethod
-    def type(cls):
+    def tf_type(cls):
         return Provider
 
     @classmethod
-    def type_name(cls):
+    def tf_type_name(cls):
         return 'provider'
 
     @classmethod
-    def model(cls, scope: Scope[Block]) -> TfJsonObject:
-        blocks = scope.get_items(cls.type_name())
+    def tf_model(cls, scope: Scope[Block]) -> TfJsonObject:
+        blocks = scope.get_items(cls.tf_type_name())
         model = {}
         for block in blocks:
-            if block.sub_type not in model:
-                model[block.sub_type] = []
-            model[block.sub_type].append(block.json())
+            if block.tf_sub_type not in model:
+                model[block.tf_sub_type] = []
+            model[block.tf_sub_type].append(block.tf_json())
         return model

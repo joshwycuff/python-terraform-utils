@@ -16,14 +16,14 @@ class Resource(Block):
         self.depends_on(other)
 
     def depends_on(self, other: Resource):
-        if 'depends_on' not in self.data:
-            self.data['depends_on'] = []
-        self.data['depends_on'].append(str(other))
+        if 'depends_on' not in self.tf_data:
+            self.tf_data['depends_on'] = []
+        self.tf_data['depends_on'].append(str(other))
 
     @classmethod
-    def type(cls):
+    def tf_type(cls):
         return Resource
 
     @classmethod
-    def type_name(cls):
+    def tf_type_name(cls):
         return 'resource'

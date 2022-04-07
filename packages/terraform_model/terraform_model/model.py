@@ -33,8 +33,8 @@ def compile_terraform(scope_name: str = DEFAULT_NAME, dirpath: str = DIST):
     obj = model(scope)
     dump(obj, filepath)
     for child in scope.children:
-        child_dirpath = os.path.join(dirpath, 'modules', child.name)
-        compile_terraform(child.name, child_dirpath)
+        child_dirpath = os.path.join(dirpath, 'modules', child.tf_name)
+        compile_terraform(child.tf_name, child_dirpath)
 
 
 
@@ -48,6 +48,6 @@ def model(scope: Scope) -> TfJsonObject:
     for block_type_name in scope.get_keys():
         if block_type_name not in BLOCK_MODEL_ALLOW_LIST:
             continue
-        block_type = Block.get_type(block_type_name)
-        model[block_type.type_name()] = block_type.model(scope)
+        block_type = Block.tf_get_type(block_type_name)
+        model[block_type.tf_type_name()] = block_type.tf_model(scope)
     return model
