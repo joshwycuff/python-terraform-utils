@@ -9,8 +9,8 @@ from terraform_model.types.primitives.tfstring import TfString
 
 class Resource(Block):
 
-    def __init__(self, sub_type: str, name: str, **kwargs: TfJsonLike):
-        super().__init__(sub_type, name, **kwargs)
+    def __init__(self, sub_type: str, local_name: str, **kwargs: TfJsonLike):
+        super().__init__(sub_type, local_name, **kwargs)
 
     def __rshift__(self, other: Resource):
         self.depends_on(other)

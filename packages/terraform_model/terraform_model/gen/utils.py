@@ -1,9 +1,8 @@
 # std
-import keyword
 from inspect import Parameter
 import re
 from types import GenericAlias
-from typing import Dict, List, Set, Union
+from typing import Dict, List, Optional, Set, Union
 import os
 
 # internal
@@ -44,9 +43,8 @@ def _generic_class_path(cls: type) -> str:
 def create_init_method(class_: Class, block_schema: dict, sub_type: str):
     parameters = get_parameters(block_schema)
     method = class_.method('__init__', parameters)
-    kwargs = 'dict(' + ', '.join(
-        (f'{p["name"]}={p["name"]}' for p in parameters if p['name'] != 'local_name')) + ')'
-    method.append(f'super().__init__("{unsafe_name(sub_type)}", local_name, **{kwargs})')
+    kwargs = 'dict(' + ', '.join((f'{p["name"]}={p["name"]}' for p in parameters)) + ')'
+    method.append(f'super().__init__("{unsafe_name(sub_type)}", **{kwargs})')
 
 
 def add_attributes(class_: Class, block_schema: dict):
@@ -62,26 +60,26 @@ def _add_attribute(class_: Class, attribute_name: str, return_annotation: type):
 
 
 def get_parameters(block_schema: dict) -> list[dict]:
-    parameters = [{
-        'name': 'local_name',
-        'kind': Parameter.POSITIONAL_ONLY,
-        'annotation': get_type_like('string'),
-    }]
+    parameters = []
     for name, attribute in block_schema.get('attributes', {}).items():
         if attribute.get('computed', False):
             continue
         parameter = {
             'name': name,
-            'annotation': get_annotation(attribute['type']),
+            'annotation': attribute.get('annotation') or get_annotation(attribute['type']),
         }
         if attribute.get('optional', False):
             parameter['default'] = void
+        if attribute.get('kind') is not None:
+            parameter['kind'] = attribute['kind']
         parameters.append(parameter)
     for name, block_type in block_schema.get('block_types', {}).items():
         parameter = {
             'name': name,
             'annotation': get_block_annotation(name, block_type),
         }
+        if 'min_items' not in block_type:
+            parameter['default'] = void
         parameters.append(parameter)
     return parameters
 
@@ -154,14 +152,19 @@ def _generic_alias(origin, arg):
 def get_block_annotation(name: str, block_type: dict):
     class_name = get_class_name(name)
     nesting_mode = block_type.get('nesting_mode')
+    annotation = class_name
     if nesting_mode == 'single':
-        return class_name
+        pass
     elif nesting_mode == 'list':
-        return Union[List[class_name], deferred.TfList[class_name]]
+        annotation = Union[List[class_name], deferred.TfList[class_name]]
     elif nesting_mode == 'set':
-        return Union[Set[class_name], deferred.TfSet[class_name]]
+        annotation = Union[Set[class_name], deferred.TfSet[class_name]]
     else:
         raise NotImplementedError
+    min_items = block_type.get('min_items')
+    if not min_items:
+        annotation = Optional[annotation]
+    return annotation
 
 
 def remove_forward_refs(string: str) -> str:
@@ -173,10 +176,14 @@ def prepend_imports(code: str) -> str:
         f'from {m[0]} import {m[-1]}'
         for m in re.findall(TERRAFORM_MODEL_USAGE, code)
     ]))
-    return f'''from typing import Dict, List, Union, Set, Tuple
+    return f'''from typing import Dict, List, Optional, Union, Set, Tuple
 
 import terraform_model
 from terraform_model.types.internal.tfvoid import void
+
+# types
+NoneType = type(None)
+
 {terraform_model_imports}
 
 

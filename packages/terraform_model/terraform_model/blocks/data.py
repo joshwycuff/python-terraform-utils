@@ -10,8 +10,8 @@ from .block import Block
 
 class Data(Block):
 
-    def __init__(self, sub_type: str, name: str, **kwargs: TfJsonLike):
-        super().__init__(sub_type, name, **kwargs)
+    def __init__(self, sub_type: str, local_name: str, **kwargs: TfJsonLike):
+        super().__init__(sub_type, local_name, **kwargs)
 
     def __str__(self):
         return f'data.{self.tf_sub_type}.{self.tf_name}'

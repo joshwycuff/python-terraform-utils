@@ -8,7 +8,7 @@ from copy import deepcopy
 from typing import Dict, Optional as Opt, Union
 
 # internal
-from ..utils.types import JsonObject
+from terraform_model.utils.types import JsonObject
 from terraform_model.utils.utils import get_class_name
 from terraform_model.gen.utils import safe_name
 

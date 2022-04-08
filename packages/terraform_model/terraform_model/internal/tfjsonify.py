@@ -12,6 +12,8 @@ def tfjsonify(obj):
         return tfstringify(obj)
     elif is_generic(obj):
         return tfstringify(obj)
+    elif hasattr(obj, 'tf_json') and callable(obj.tf_json):
+        return tfjsonify(obj.tf_json())
     elif hasattr(obj, 'json') and callable(obj.json):
         return tfjsonify(obj.json())
     elif (not isinstance(obj, GetAttrMixin) or isinstance(obj, TfUnknown)) and hasattr(obj, 'data'):

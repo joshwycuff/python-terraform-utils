@@ -12,7 +12,7 @@ class TfFunction(Expression):
 
     @property
     def name(self):
-        return self._args[0].tf_data
+        return self._args[0].data
 
     @property
     def args(self):

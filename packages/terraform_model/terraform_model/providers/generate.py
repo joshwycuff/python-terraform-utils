@@ -5,14 +5,14 @@ import os
 import terraform_model.utils.utils
 from terraform_model.utils import log
 from terraform_model.providers.provider import Provider
-from terraform_model.providers.resource_schema import ResourceSchema
+from terraform_model.providers.schema.resource_schema import ResourceSchema
 from terraform_model.gen.resource import compile_resource
 from terraform_model.gen.data_source import compile_data_source
 from terraform_model.gen import utils
 from terraform_model.utils.open import Open
-
-# constants
-PROVIDERS_DIR = 'providers'
+from terraform_model.gen.code import Code
+from terraform_model.gen.block import compile_block, get_block_class_name, \
+    DATA_BLOCK_TYPE, PROVIDER_BLOCK_TYPE
 
 
 def generate_providers(providers: list[Provider]):
@@ -21,10 +21,27 @@ def generate_providers(providers: list[Provider]):
 
 
 def _generate_provider(provider: Provider):
-    provider_dir = os.path.join(PROVIDERS_DIR, provider.friendly_name)
-    log.info(f'Generating provider {provider.name} at {provider_dir}')
-    _generate_resources(provider_dir, provider.schema.resources)
-    _generate_data_sources(provider_dir, provider.schema.data_sources)
+    log.info(f'Generating provider {provider.name} at {provider.dir}')
+    _generate_provider_class(provider)
+    _generate_resources(provider.dir, provider.schema.resources)
+    _generate_data_sources(provider.dir, provider.schema.data_sources)
+
+
+def _generate_provider_class(provider: Provider):
+    filepath = os.path.join(provider.dir, f'provider.py')
+    log.debug(f'Generating provider {provider.name} at {filepath}')
+    code = _compile_provider(provider.short_name, provider.schema.provider.safe_schema)
+    utils.prepend_imports(code)
+    with Open(filepath, mode='w') as fh:
+        fh.write(code)
+    _import_up(filepath, get_block_class_name(provider.short_name, PROVIDER_BLOCK_TYPE))
+
+
+def _compile_provider(name: str, provider_block_schema: dict) -> str:
+    code = Code()
+    compile_block(name, provider_block_schema, code, PROVIDER_BLOCK_TYPE)
+    code.append('')
+    return utils.prepend_imports(utils.remove_forward_refs(code.compile()))
 
 
 def _generate_resources(provider_dir: str, resource_schemas: list[ResourceSchema]):
@@ -55,7 +72,7 @@ def _generate_data_source(data_sources_dir: str, data_source_schema: ResourceSch
     code = compile_data_source(data_source_schema.name, data_source_schema.safe_schema)
     with Open(filepath, mode='w') as fh:
         fh.write(code)
-    _import_up(filepath, f'Data{terraform_model.utils.utils.get_class_name(data_source_schema.name)}')
+    _import_up(filepath, get_block_class_name(data_source_schema.name, DATA_BLOCK_TYPE))
 
 
 def _import_up(filepath: str, class_name: str):

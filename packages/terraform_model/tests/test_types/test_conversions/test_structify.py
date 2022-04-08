@@ -87,9 +87,9 @@ class TestStructify(unittest.TestCase):
         result = structify(definition)
         instance = result(attribute_a='abc', attribute_b=123)
         with self.subTest('attribute property string'):
-            self.assertEqual(instance.attribute_a.tf_data, 'abc')
+            self.assertEqual(instance.attribute_a.data, 'abc')
         with self.subTest('attribute property number'):
-            self.assertEqual(instance.attribute_b.tf_data, 123)
+            self.assertEqual(instance.attribute_b.data, 123)
 
     def test_basic_object_instance_not_attribute(self):
         definition = [

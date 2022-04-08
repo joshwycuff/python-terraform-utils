@@ -24,11 +24,11 @@ class Block(ABC, ExpressionMixin, GetAttrMixin):
     def __init__(
             self,
             sub_type: Opt[str],
-            name: Opt[str],
+            local_name: Opt[str],
             **data,
     ):
         self._tf_sub_type: Opt[str] = sub_type
-        self._tf_name: Opt[str] = name
+        self._tf_name: Opt[str] = local_name
         self._tf_data: dict = {k: maybe_typify(v) for k, v in data.items()}
         type_name = self.tf_type_name()
         if type_name not in self._types:

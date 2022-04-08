@@ -19,7 +19,7 @@ class MathExpression(Expression):
 
     @property
     def op(self):
-        return self._args[1].tf_data
+        return self._args[1].data
 
     @property
     def right(self):

@@ -1,8 +1,9 @@
 # std
 
 # internal
-from ..utils.types import JsonObject
-from .schema import SchemaABC
+from terraform_model.utils.types import JsonObject
+from terraform_model.providers.schema.schema import SchemaABC
+from .provider_block_schema import ProviderBlockSchema
 from .resource_schema import ResourceSchema
 from .data_source_schema import DataSourceSchema
 
@@ -11,8 +12,13 @@ class ProviderSchema(SchemaABC):
 
     def __init__(self, name: str, schema: JsonObject):
         super().__init__(name, schema)
+        self.provider = self._load_provider_schema()
         self.resources = self._load_resource_schemas()
         self.data_sources = self._load_data_source_schemas()
+
+    def _load_provider_schema(self):
+        schema = self.schema.get('provider', {})
+        return ProviderBlockSchema(self.name, schema)
 
     def _load_resource_schemas(self):
         resources = []

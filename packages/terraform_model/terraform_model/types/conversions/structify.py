@@ -77,8 +77,8 @@ def _structify_object(definition: _definition_list, name: Opt[str] = None) -> ty
 
     def prop(name: str, tf_type: type(TfType)):
         def _prop(self):
-            if isinstance(self._tf_data, dict):
-                return tf_type(self._tf_data[name])
+            if isinstance(self._data, dict):
+                return tf_type(self._data[name])
             else:
                 return tf_type(GetAttr(self, name))
 
