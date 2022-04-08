@@ -12,7 +12,11 @@ class DataSourceSchema(SchemaABC):
     def schema(self):
         schema = deepcopy(self._schema)
         schema['block']['attributes'] = {
-            **DATA_SOURCE_META_ARGUMENTS,
+            **DATA_SOURCE_META_ARGUMENTS['block']['attributes'],
             **schema['block']['attributes'],
+        }
+        schema['block']['block_types'] = {
+            **DATA_SOURCE_META_ARGUMENTS['block']['block_types'],
+            **schema['block'].get('block_types', {}),
         }
         return schema

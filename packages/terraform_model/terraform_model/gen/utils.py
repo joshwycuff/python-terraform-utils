@@ -162,7 +162,7 @@ def get_block_annotation(name: str, block_type: dict):
     elif nesting_mode == 'set':
         annotation = Union[Set[class_name], deferred.TfSet[class_name]]
     else:
-        raise NotImplementedError
+        raise NotImplementedError(f'nesting mode {nesting_mode} not implemented')
     min_items = block_type.get('min_items')
     if not min_items:
         annotation = Optional[annotation]

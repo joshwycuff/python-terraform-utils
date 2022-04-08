@@ -12,7 +12,11 @@ class ResourceSchema(SchemaABC):
     def schema(self):
         schema = deepcopy(self._schema)
         schema['block']['attributes'] = {
-            **RESOURCE_META_ARGUMENTS,
+            **RESOURCE_META_ARGUMENTS['block']['attributes'],
             **schema['block']['attributes'],
+        }
+        schema['block']['block_types'] = {
+            **RESOURCE_META_ARGUMENTS['block']['block_types'],
+            **schema['block'].get('block_types', {}),
         }
         return schema
