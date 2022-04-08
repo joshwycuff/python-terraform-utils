@@ -3,8 +3,8 @@ from __future__ import annotations
 
 # internal
 from .block import Block
-from terraform_model.internal.tftype import TfJsonLike
-from terraform_model.types.primitives.tfstring import TfString
+from terraform_model.internal.tftype import TfJsonObject, TfJsonLike
+from terraform_model.types.internal.tfvoid import void
 
 
 class Resource(Block):
@@ -13,12 +13,20 @@ class Resource(Block):
         super().__init__(sub_type, local_name, **kwargs)
 
     def __rshift__(self, other: Resource):
-        self.depends_on(other)
+        other.depends_on(self)
 
     def depends_on(self, other: Resource):
         if 'depends_on' not in self.tf_data:
             self.tf_data['depends_on'] = []
-        self.tf_data['depends_on'].append(str(other))
+        elif self.tf_data['depends_on'] is void:
+            self.tf_data['depends_on'] = []
+        self.tf_data['depends_on'].append(other)
+
+    def tf_json(self) -> TfJsonObject:
+        obj = super().tf_json()
+        if 'depends_on' in obj:
+            obj['depends_on'] = [str(b) for b in obj['depends_on']]
+        return obj
 
     @classmethod
     def tf_type(cls):

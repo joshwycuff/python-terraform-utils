@@ -13,6 +13,6 @@ class ProviderBlockSchema(SchemaABC):
         schema = deepcopy(self._schema)
         schema['block']['attributes'] = {
             **PROVIDER_META_ARGUMENTS,
-            **schema['block']['attributes'],
+            **schema['block'].get('attributes', {}),
         }
         return schema

@@ -1,8 +1,5 @@
-# std
-from typing import Optional as Opt, Type, Union
-
 # internal
-from terraform_model.internal.tftype import TfJsonLike
+from terraform_model.internal.tftype import TfJsonObject, TfJsonLike
 from terraform_model.types.internal.tftype import TfType
 from terraform_model.types.conversions.typify import typify
 from .block import Block
@@ -15,6 +12,12 @@ class Data(Block):
 
     def __str__(self):
         return f'data.{self.tf_sub_type}.{self.tf_name}'
+
+    def tf_json(self) -> TfJsonObject:
+        obj = super().tf_json()
+        if 'depends_on' in obj:
+            obj['depends_on'] = [str(b) for b in obj['depends_on']]
+        return obj
 
     @classmethod
     def tf_type(cls):

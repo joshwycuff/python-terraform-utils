@@ -49,6 +49,8 @@ def create_init_method(class_: Class, block_schema: dict, sub_type: str):
 
 def add_attributes(class_: Class, block_schema: dict):
     for name, schema in block_schema.get('attributes', {}).items():
+        if schema.get('meta', False):
+            continue
         return_annotation = tftype(schema.get('type', 'unknown'))
         _add_attribute(class_, name, return_annotation)
 
