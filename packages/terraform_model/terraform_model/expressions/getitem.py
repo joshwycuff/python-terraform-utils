@@ -1,5 +1,5 @@
 # internal
-from terraform_model.expressions.expression import Expression
+from terraform_model.expressions.internal.expression import Expression
 from terraform_model.internal.deferred import deferred
 
 

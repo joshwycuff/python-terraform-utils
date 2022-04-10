@@ -1,4 +1,4 @@
-from terraform_model.expressions.expression import Expression
+from terraform_model.expressions.internal.expression import Expression
 
 
 class GetAttr(Expression):

@@ -10,7 +10,7 @@ from terraform_model.utils.errors import TerraformTypeError
 from terraform_model.internal.tftype import tftype, get_type_like
 from terraform_model.internal.deferred import deferred
 from terraform_model.gen.code import Class, SELF, Code
-from terraform_model.expressions.expressions.getattr import GetAttr
+from terraform_model.expressions.getattr import GetAttr
 from terraform_model.utils.utils import get_class_name
 from terraform_model.types.internal.tfvoid import void
 

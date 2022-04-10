@@ -8,7 +8,7 @@ from ..internal.tftype import TfType
 from terraform_model.types import TfPrimitive, TfBool, TfNull, TfNumber, TfString, \
     TfCollection, TfList, TfMap, TfSet, \
     TfStructural, TfTuple, TfObject
-from terraform_model.expressions.expressions.getattr import GetAttr
+from terraform_model.expressions.getattr import GetAttr
 from terraform_model.utils.utils import get_class_name
 
 # types

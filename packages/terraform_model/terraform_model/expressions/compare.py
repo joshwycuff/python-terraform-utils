@@ -1,7 +1,7 @@
 from terraform_model.types.primitives.tfbool import TfBool
 from terraform_model.types.conversions.typify import typify
 from terraform_model.internal import tfassert
-from terraform_model.expressions.expressions.math import MathExpression
+from terraform_model.expressions.math import MathExpression
 
 
 class Compare(MathExpression):

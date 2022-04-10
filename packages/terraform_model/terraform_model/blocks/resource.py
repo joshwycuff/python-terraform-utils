@@ -5,7 +5,7 @@ from __future__ import annotations
 from .block import Block
 from terraform_model.internal.tftype import TfJsonObject, TfJsonLike, TfType
 from terraform_model.types.internal.tfvoid import void
-from terraform_model.expressions.expressions.getattr import GetAttr
+from terraform_model.expressions.getattr import GetAttr
 
 
 class Resource(Block):

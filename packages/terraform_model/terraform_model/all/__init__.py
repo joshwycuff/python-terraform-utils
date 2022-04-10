@@ -1,5 +1,5 @@
 from terraform_model.types import *
-from terraform_model.expressions.expressions.ternary import ternary
+from terraform_model.expressions.ternary import ternary
 from terraform_model.functions import *
 
 from terraform_model.blocks.terraform import RequiredVersion, RequiredProvider, Backend, S3Backend

@@ -2,7 +2,7 @@
 from terraform_model.types.internal.tftype import TfType
 from terraform_model.types.conversions.typify import to, typify
 from terraform_model.internal import tfassert
-from terraform_model.expressions.expression import Expression
+from terraform_model.expressions.internal.expression import Expression
 
 
 class Ternary(Expression):

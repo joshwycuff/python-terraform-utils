@@ -137,42 +137,42 @@ class Deferred:
 
     @property
     def Expression(self):
-        from terraform_model.expressions.expression import Expression
+        from terraform_model.expressions.internal.expression import Expression
         return Expression
 
     @property
     def GetAttr(self):
-        from terraform_model.expressions.expressions.getattr import GetAttr
+        from terraform_model.expressions.getattr import GetAttr
         return GetAttr
 
     @property
     def GetItem(self):
-        from terraform_model.expressions.expressions.getitem import GetItem
+        from terraform_model.expressions.getitem import GetItem
         return GetItem
 
     @property
     def math(self):
-        from terraform_model.expressions.expressions.math import math
+        from terraform_model.expressions.math import math
         return math
 
     @property
     def compare(self):
-        from terraform_model.expressions.expressions.compare import compare
+        from terraform_model.expressions.compare import compare
         return compare
 
     @property
     def index(self):
-        from terraform_model.expressions.expressions.index import index
+        from terraform_model.expressions.index import index
         return index
 
     @property
     def logical(self):
-        from terraform_model.expressions.expressions.logical import logical
+        from terraform_model.expressions.logical import logical
         return logical
 
     @property
     def unary(self):
-        from terraform_model.expressions.expressions.unary import unary
+        from terraform_model.expressions.unary import unary
         return unary
 
     @property

@@ -2,7 +2,7 @@
 from typing import cast, Union
 
 # internal
-from terraform_model.expressions.expression import Expression
+from terraform_model.expressions.internal.expression import Expression
 from terraform_model.internal.deferred import deferred
 from terraform_model.types.collections.tflist import TfList
 from terraform_model.types.primitives.tfnumber import TfNumber

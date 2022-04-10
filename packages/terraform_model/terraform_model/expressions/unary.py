@@ -5,9 +5,9 @@ from typing import Union
 from terraform_model import conf
 from terraform_model.types.primitives.tfbool import TfBool
 from terraform_model.types.primitives.tfnumber import TfNumber
-from terraform_model.types.internal.tfunknown import tfunknown, TfUnknown
+from terraform_model.types.internal.tfunknown import TfUnknown
 from terraform_model.types.conversions.typify import typify
-from terraform_model.expressions.expression import Expression
+from terraform_model.expressions.internal.expression import Expression
 from terraform_model.utils.errors import TerraformTypeError
 
 
