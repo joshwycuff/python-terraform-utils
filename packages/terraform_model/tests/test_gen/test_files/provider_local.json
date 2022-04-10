@@ -1,0 +1,24 @@
+{
+  "//": {
+    "terraform_model": "0.1.0"
+  },
+  "provider": {
+    "local": [
+      {}
+    ]
+  },
+  "resource": {
+    "local_file": {
+      "file": {
+        "filename": "file.txt"
+      }
+    }
+  },
+  "terraform": {
+    "required_providers": {
+      "local": {
+        "version": "2.2.2"
+      }
+    }
+  }
+}

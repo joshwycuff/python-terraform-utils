@@ -10,7 +10,6 @@ Resource(
     'name-str',
     config_block=Configuration(
         'config_block_sub_type',
-        'name',
         property='value',
     ),
 )
