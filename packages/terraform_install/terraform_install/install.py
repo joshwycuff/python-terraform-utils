@@ -8,11 +8,9 @@ import shutil
 import tempfile
 import zipfile
 
-# external
-from terraform_version import __version__
-
 # internal
-from .constants import TERRAFORM_RELEASES_DIR
+from terraform_install.constants import TERRAFORM_RELEASES_DIR
+from terraform_install.version import __terraform_version__
 
 
 @contextmanager
@@ -51,7 +49,7 @@ def get_system() -> str:
 def get_terraform_version_name() -> str:
     arch = get_architecture()
     system = get_system()
-    return f'terraform_{__version__}_{system}_{arch}'
+    return f'terraform_{__terraform_version__}_{system}_{arch}'
 
 
 def get_terraform_download_zip_filename() -> str:
@@ -59,11 +57,11 @@ def get_terraform_download_zip_filename() -> str:
 
 
 def get_terraform_download_path() -> str:
-    return f'/terraform/{__version__}/{get_terraform_download_zip_filename()}'
+    return f'/terraform/{__terraform_version__}/{get_terraform_download_zip_filename()}'
 
 
 def install_terraform():
-    print(f'Installing Terraform v{__version__}')
+    print(f'Installing Terraform v{__terraform_version__}')
     with tmp_dir():
         with https_connection('releases.hashicorp.com') as conn:
             conn.request('GET', get_terraform_download_path())
@@ -78,4 +76,4 @@ def install_terraform():
         folder = os.path.join(TERRAFORM_RELEASES_DIR, get_terraform_version_name())
         pathlib.Path(folder).mkdir(parents=True, exist_ok=True)
         shutil.copy('./terraform', folder)
-        os.symlink(folder, os.path.join(TERRAFORM_RELEASES_DIR, __version__))
+        os.symlink(folder, os.path.join(TERRAFORM_RELEASES_DIR, __terraform_version__))

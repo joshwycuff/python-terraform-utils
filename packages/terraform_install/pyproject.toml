@@ -12,7 +12,7 @@ packages = [{ include = "terraform_install" }]
 
 [tool.poetry.dependencies]
 python = ">=3.6,<4.0"
-terraform_version = "*"
+terraform_version = { version = "*", optional = true }
 
 [tool.poetry.dev-dependencies]
 
